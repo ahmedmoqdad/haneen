@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>الفصل الأجمل - حنين عبد العزيز</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --primary: #E2A77B; 
+            --primary-glow: rgba(226, 167, 123, 0.5);
+            --bg-center: #121826; 
+            --bg-edge: #05070A; 
+            --surface: rgba(18, 24, 38, 0.7); 
+            --text: #FDFBF7; 
+        }
+        * { box-sizing: border-box; }
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            background-color: var(--bg-edge);
+            color: var(--text); 
+            font-family: 'Tajawal', sans-serif; 
+            overflow-x: hidden; 
+            -webkit-text-size-adjust: 100%; 
+            min-height: 100vh;
+        }
+
+        .bg-breathing {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at center, var(--bg-center) 0%, var(--bg-edge) 100%);
+            z-index: -2;
+            animation: breathe 8s infinite alternate ease-in-out;
+        }
+        @keyframes breathe {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 999;
+        }
+        
+        canvas#particles-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; filter: blur(1px); }
+
+        #intro { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; background: var(--bg-edge); transition: opacity 1.5s, visibility 1.5s; }
+        .typewriter { 
+            overflow: hidden; 
+            border-left: 2px solid var(--primary); 
+            white-space: nowrap; 
+            margin: 0 auto; 
+            letter-spacing: 2px; 
+            animation: typing 3.5s steps(35, end), blink-caret .75s step-end infinite; 
+            font-size: 1.8rem; 
+            font-family: 'Aref Ruqaa', serif; 
+            color: var(--primary);
+            text-shadow: 0 0 25px var(--primary-glow);
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--primary); } }
+        
+        .btn { 
+            margin-top: 50px; 
+            padding: 14px 40px; 
+            background: rgba(226, 167, 123, 0.05); 
+            color: var(--primary); 
+            border: 1px solid rgba(226, 167, 123, 0.6); 
+            cursor: pointer; 
+            opacity: 0; 
+            animation: fadeIn 1s forwards; 
+            animation-delay: 3.5s; 
+            font-family: 'Tajawal', sans-serif; 
+            font-size: 1.1rem; 
+            font-weight: bold;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            backdrop-filter: blur(8px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            -webkit-appearance: none;
+            box-shadow: inset 0 0 10px rgba(226, 167, 123, 0.1);
+        }
+        .btn:hover, .btn:active { 
+            background: var(--primary); 
+            color: var(--bg-edge); 
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 30px var(--primary-glow), inset 0 0 15px rgba(255,255,255,0.4);
+        }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        #main-content { display: none; padding: 50px 20px; max-width: 1000px; margin: auto; position: relative; z-index: 1; }
+        
+        .header-title { 
+            font-size: 3.2rem; 
+            font-family: 'Aref Ruqaa', serif;
+            display: block; 
+            margin-bottom: 60px; 
+            text-align: center; 
+            color: var(--text);
+            text-shadow: 0 5px 25px rgba(0,0,0,0.8);
+            letter-spacing: 1px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUpFade 1.5s forwards 0.5s;
+        }
+        .header-title span { color: var(--primary); text-shadow: 0 0 15px var(--primary-glow); }
+        @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
+        
+        .media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 50px; margin-bottom: 80px; perspective: 1200px; }
+        
+        .tilt-card { transform-style: preserve-3d; transition: transform 0.1s; display: flex; flex-direction: column; position: relative; animation: slideUpFade 1.5s forwards 0.8s; opacity: 0; }
+        .book-glow { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%); transform: translate(-50%, -50%); opacity: 0; transition: opacity 0.5s; z-index: -1; filter: blur(25px); }
+        .tilt-card:hover .book-glow { opacity: 1; }
+        
+        .book-cover { 
+            background-image: url('1000399851.jpg');
+            background-size: cover;
+            background-position: center;
+            border: 1px solid rgba(226, 167, 123, 0.4); 
+            padding: 40px 20px; 
+            text-align: center; 
+            border-radius: 4px 14px 14px 4px; 
+            box-shadow: inset 20px 0 35px rgba(0,0,0,0.9), 15px 20px 40px rgba(0,0,0,0.7); 
+            height: 420px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            transform: translateZ(40px); 
+            position: relative; 
+            overflow: hidden;
+        }
+        .book-cover-overlay {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: linear-gradient(135deg, rgba(30,38,56,0.5) 0%, rgba(8,10,15,0.7) 100%);
+            z-index: 1;
+        }
+        .book-cover::before { content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 6px; background: linear-gradient(to right, rgba(255,255,255,0.02), rgba(255,255,255,0.1), rgba(255,255,255,0.02)); box-shadow: 2px 0 5px rgba(0,0,0,0.5); z-index: 2; }
+        .book-cover::after { content: ''; position: absolute; top: 0; right: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px); pointer-events: none; z-index: 2; }
+        
+        .book-content { position: relative; z-index: 3; }
+        .book-title { color: var(--primary); font-size: 2.8rem; margin-bottom: 30px; font-family: 'Aref Ruqaa', serif; text-shadow: 0 5px 15px rgba(0,0,0,0.9); line-height: 1.3; }
+        .book-author { color: var(--text); font-size: 1.25rem; opacity: 0.9; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        
+        .video-container { 
+            background: var(--surface); 
+            padding: 12px; 
+            border: 1px solid rgba(226, 167, 123, 0.2); 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6); 
+            display: flex; 
+            align-items: center;
+            border-radius: 10px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            transform: translateZ(15px);
+            opacity: 0;
+            animation: slideUpFade 1.5s forwards 1s;
+        }
+        .video-container video { width: 100%; display: block; outline: none; border-radius: 6px; filter: contrast(1.08) saturate(1.15); }
+
+        .timeline { position: relative; margin: 100px 0; padding: 0; list-style: none; }
+        .timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: linear-gradient(to bottom, transparent, rgba(226, 167, 123, 0.6), transparent); transform: translateX(-50%); }
+        .timeline-item { position: relative; width: 50%; padding: 30px 50px; opacity: 0; filter: blur(10px); transform: translateY(60px) scale(0.95); transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .timeline-item:nth-child(odd) { left: 0; text-align: left; }
+        .timeline-item:nth-child(even) { left: 50%; text-align: right; }
+        .timeline-item.show { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
+        .timeline-item::after { content: ''; position: absolute; top: 45px; right: -8px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg-center); border: 2px solid var(--primary); box-shadow: 0 0 20px var(--primary-glow); transition: background 0.4s, transform 0.4s; }
+        .timeline-item:nth-child(even)::after { left: -8px; }
+        .timeline-item:hover::after { background: var(--primary); transform: scale(1.3); }
+        
+        .timeline-content { 
+            background: linear-gradient(145deg, rgba(26, 32, 44, 0.65), rgba(15, 20, 28, 0.85));
+            padding: 35px; 
+            border-radius: 12px; 
+            border: 1px solid rgba(226, 167, 123, 0.15); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+        .timeline-content:hover { transform: translateY(-10px) scale(1.02); border-color: rgba(226, 167, 123, 0.5); box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
+        .timeline-content h3 { color: var(--primary); margin-top: 0; font-family: 'Aref Ruqaa', serif; font-size: 1.9rem; margin-bottom: 15px; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
+        .timeline-content p { line-height: 2; color: #E5E7EB; font-size: 1.15rem;}
+        
+        @media (max-width: 600px) {
+            .timeline::before { left: 25px; }
+            .timeline-item { width: 100%; left: 0 !important; text-align: right !important; padding: 25px 20px 25px 55px; }
+            .timeline-item::after { right: auto !important; left: 17px !important; top: 40px; }
+        }
+
+        .scratch-wrapper { 
+            position: relative; 
+            width: 100%; 
+            max-width: 500px; 
+            height: 260px; 
+            margin: 100px auto 50px auto; 
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+            border: 1px solid rgba(226, 167, 123, 0.25);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+        .scratch-wrapper.show { opacity: 1; transform: translateY(0); }
+        .scratch-message { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            background: linear-gradient(135deg, #1e2638, #080a0f); 
+            color: var(--primary); 
+            font-size: 1.7rem; 
+            text-align: center; 
+            padding: 30px; 
+            line-height: 1.9;
+            font-family: 'Aref Ruqaa', serif;
+            transition: text-shadow 1s ease, transform 1s ease;
+            transform: scale(0.95);
+        }
+        .scratch-message.revealed { text-shadow: 0 0 25px var(--primary-glow); animation: pulseText 3s infinite; transform: scale(1); }
+        @keyframes pulseText { 0% { text-shadow: 0 0 15px var(--primary-glow); } 50% { text-shadow: 0 0 35px var(--primary); } 100% { text-shadow: 0 0 15px var(--primary-glow); } }
+        
+        .sender-name { 
+            font-size: 1.15rem; 
+            color: #9CA3AF; 
+            margin-top: 25px; 
+            font-family: 'Tajawal', sans-serif;
+            letter-spacing: 1px;
+            text-shadow: none;
+        }
+        canvas#scratch { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; touch-action: none; cursor: crosshair; transition: opacity 1s ease; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-breathing"></div>
+    <canvas id="particles-bg"></canvas>
+
+    <div id="intro">
+        <div class="typewriter">هناك رواية لم تكتمل بعد...</div>
+        <button class="btn" onclick="initExperience()">اقرأ الفصل الجديد</button>
+    </div>
+
+    <div id="main-content">
+        <h1 class="header-title">الفصل الأجمل: <span>حنين عبد العزيز</span></h1>
+        
+        <div class="media-grid">
+            <div class="tilt-card" id="tilt-element">
+                <div class="book-glow"></div>
+                <div class="book-cover">
+                    <div class="book-cover-overlay"></div>
+                    <div class="book-content">
+                        <div class="book-title">رواية لم تكتمل</div>
+                        <div class="book-author">بقلم: حنين عبد العزيز</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="video-container">
+                <video controls playsinline preload="auto">
+                    <source src="VID_20260521_095443_942.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <ul class="timeline">
+            <li class="timeline-item">
+                <div class="timeline-content">
+                    <h3>التمهيد</h3>
+                    <p>الكلمات هي السلاح الوحيد الذي يبني ولا يهدم، وأنتِ تتقنين بناء العوالم والمشاعر بين السطور.</p>
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-content">
+                    <h3>الحبكة</h3>
+                    <p>سنة جديدة تعني صفحات بيضاء تنتظر حبر إبداعك، لا تدعي السطور فارغة، فالعالم يحتاج قصتك.</p>
+                </div>
+            </li>
+            <li class="timeline-item">
+                <div class="timeline-content">
+                    <h3>الذروة</h3>
+                    <p>كما تأسرين القراء بنهايات غير متوقعة، أتمنى لكِ عاماً يفوق كل التوقعات ويحمل أجمل المفاجآت.</p>
+                </div>
+            </li>
+        </ul>
+
+        <div class="scratch-wrapper timeline-item">
+            <div id="final-message" class="scratch-message">
+                <div>كل عام وأنتِ الرواية الأجمل<br>في حياة من يقرأكِ.</div>
+                <div class="sender-name">إهداء من أحمد مقداد</div>
+            </div>
+            <canvas id="scratch"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const pCanvas = document.getElementById('particles-bg');
+        const pCtx = pCanvas.getContext('2d');
+        const pArray = [];
+        
+        function resizeParticles() {
+            pCanvas.width = window.innerWidth;
+            pCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeParticles);
+        resizeParticles();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * pCanvas.width;
+                this.y = pCanvas.height + Math.random() * 100;
+                this.width = Math.random() * 10 + 5;
+                this.height = this.width * 1.4;
+                this.speedY = Math.random() * 0.6 + 0.2;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.angle = Math.random() * 360;
+                this.spin = (Math.random() - 0.5) * 2;
+                this.opacity = Math.random() * 0.4 + 0.05;
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                this.angle += this.spin;
+                if (this.y < -50) {
+                    this.y = pCanvas.height + 50;
+                    this.x = Math.random() * pCanvas.width;
+                }
+            }
+            draw() {
+                pCtx.save();
+                pCtx.translate(this.x, this.y);
+                pCtx.rotate(this.angle * Math.PI / 180);
+                pCtx.fillStyle = `rgba(226, 167, 123, ${this.opacity})`;
+                pCtx.shadowBlur = 10;
+                pCtx.shadowColor = 'rgba(226, 167, 123, 0.5)';
+                pCtx.fillRect(-this.width/2, -this.height/2, this.width, this.height);
+                pCtx.restore();
+            }
+        }
+
+        for (let i = 0; i < 40; i++) pArray.push(new Particle());
+
+        function animateParticles() {
+            pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+            pArray.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playTypewriter() {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(100 + Math.random()*50, audioCtx.currentTime);
+            gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.05);
+        }
+
+        function playChime() {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const frequencies = [523.25, 659.25, 783.99, 1046.50];
+            frequencies.forEach((freq, index) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime + (index * 0.1));
+                gain.gain.setValueAtTime(0, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + (index * 0.1) + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (index * 0.1) + 2);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(audioCtx.currentTime + (index * 0.1));
+                osc.stop(audioCtx.currentTime + (index * 0.1) + 2);
+            });
+        }
+
+        function initExperience() {
+            playTypewriter(); 
+            const intro = document.getElementById('intro');
+            intro.style.opacity = '0';
+            setTimeout(() => {
+                intro.style.visibility = 'hidden';
+                document.getElementById('main-content').style.display = 'block';
+                initTimeline();
+                initScratch();
+            }, 1000);
+            
+            let count = 0;
+            let interval = setInterval(() => {
+                playTypewriter();
+                count++;
+                if(count > 10) clearInterval(interval);
+            }, 80);
+        }
+
+        const tiltEl = document.getElementById('tilt-element');
+        tiltEl.addEventListener('mousemove', (e) => {
+            const rect = tiltEl.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            tiltEl.style.transform = `rotateY(${x / 18}deg) rotateX(${-y / 18}deg)`;
+        });
+        tiltEl.addEventListener('mouseleave', () => {
+            tiltEl.style.transform = `rotateY(0deg) rotateX(0deg)`;
+        });
+        
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', (e) => {
+                const tiltX = Math.max(-15, Math.min(15, e.gamma || 0));
+                const tiltY = Math.max(-15, Math.min(15, e.beta || 0));
+                tiltEl.style.transform = `rotateY(${tiltX/1.5}deg) rotateX(${-tiltY/1.5}deg)`;
+            });
+        }
+
+        function initTimeline() {
+            const items = document.querySelectorAll('.timeline-item');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        playTypewriter(); 
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.25 });
+            items.forEach(item => observer.observe(item));
+        }
+
+        function initScratch() {
+            const canvas = document.getElementById('scratch');
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            
+            ctx.fillStyle = '#E2A77B';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+            ctx.lineWidth = 2;
+            for(let i=0; i<canvas.width; i+=10) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i-50, canvas.height); ctx.stroke();
+            }
+
+            ctx.font = 'bold 26px Tajawal';
+            ctx.fillStyle = '#05070A';
+            ctx.textAlign = 'center';
+            ctx.fillText('امسحي هنا لاكتشاف النهاية', canvas.width/2, canvas.height/2 + 8);
+
+            let isDrawing = false;
+            let checkTimeout;
+            let isCleared = false;
+
+            function getPos(e) {
+                const bounds = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return { x: clientX - bounds.left, y: clientY - bounds.top };
+            }
+
+            function scratch(e) {
+                if (!isDrawing || isCleared) return;
+                e.preventDefault();
+                const pos = getPos(e);
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 35, 0, Math.PI * 2);
+                ctx.fill();
+                
+                checkClearedArea();
+            }
+            
+            function checkClearedArea() {
+                if(checkTimeout) return;
+                checkTimeout = setTimeout(() => {
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                    let transparentPixels = 0;
+                    for (let i = 3; i < imageData.length; i += 4) {
+                        if (imageData[i] < 128) transparentPixels++;
+                    }
+                    const percent = (transparentPixels / (imageData.length / 4)) * 100;
+                    if (percent > 40) {
+                        isCleared = true;
+                        canvas.style.opacity = '0';
+                        document.getElementById('final-message').classList.add('revealed');
+                        playChime();
+                        setTimeout(() => { canvas.style.display = 'none'; }, 1000);
+                    }
+                    checkTimeout = null;
+                }, 150);
+            }
+
+            canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+            canvas.addEventListener('mousemove', scratch);
+            window.addEventListener('mouseup', () => isDrawing = false);
+            
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
+            canvas.addEventListener('touchmove', scratch, {passive: false});
+            window.addEventListener('touchend', () => isDrawing = false);
+        }
+    </script>
+</body>
+</html>
